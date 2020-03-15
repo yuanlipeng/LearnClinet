@@ -1,0 +1,2 @@
+D:\LearnClinet\LearnClient\obj\Debug\Assembly-CSharp.csprojAssemblyReference.cache
+D:\LearnClinet\LearnClient\obj\Debug\Assembly-CSharp.csproj.CoreCompileInputs.cache
