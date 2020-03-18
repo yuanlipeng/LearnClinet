@@ -10,45 +10,74 @@ public static class AssetManager
     private static Dictionary<string, AsyncOperationHandle> mAssetCacheDict = new Dictionary<string, AsyncOperationHandle>();
     private static Dictionary<string, int> mAssetRefDict = new Dictionary<string, int>();
 
-    private static Dictionary<AsyncOperationHandle, IList<Action<UnityEngine.Object>>> mLoadedCbDict = new Dictionary<AsyncOperationHandle, IList<Action<UnityEngine.Object>>>();
+    private static List<string> mWaitReleaseList = new List<string>();
 
-    private static void onLoadCompleted(AsyncOperationHandle handler)
+    private static Dictionary<string, IList<Action<UnityEngine.Object>>> mLoadedCbDict = new Dictionary<string, IList<Action<UnityEngine.Object>>>();
+
+    private static int maxReleaseCount = 10;
+
+    public static void Update()
     {
-        if(mLoadedCbDict.ContainsKey(handler) == false)
+        int count = 0;
+        List<string> releaseList = new List<string>();
+        for(int i = 0; i < mWaitReleaseList.Count; i++)
         {
-            Debug.LogError("资源加载完成，但回调已经清空");
-            Addressables.Release(handler);
-            return;
+            if (count < maxReleaseCount && mAssetCacheDict.ContainsKey(mWaitReleaseList[i])==true)
+            {
+                Addressables.Release(mAssetCacheDict[mWaitReleaseList[i]]);
+                mAssetCacheDict.Remove(mWaitReleaseList[i]);
+                count++;
+                releaseList.Insert(0, mWaitReleaseList[i]);
+            }
         }
 
-        int count = mLoadedCbDict[handler].Count;
-        for(int i=count-1;i>=0;i--)
+        for(int i = 0; i < releaseList.Count; i++)
         {
-            mLoadedCbDict[handler][i]((UnityEngine.Object)handler.Result);
+            mWaitReleaseList.Remove(releaseList[i]);
         }
-
-        mLoadedCbDict.Clear();
     }
 
     private static void LoadGameObjectAsync<T>(string key, Action<UnityEngine.Object> cb)
     {
         AsyncOperationHandle handler = new AsyncOperationHandle();
         
-        if(mLoadedCbDict.ContainsKey(handler)==false)
+        if(mLoadedCbDict.ContainsKey(key)==false)
         {
-            mLoadedCbDict[handler] = new List<Action<UnityEngine.Object>>();
+            mLoadedCbDict[key] = new List<Action<UnityEngine.Object>>();
         }
 
-        mAssetCacheDict[key] = handler;
-
-        mLoadedCbDict[handler].Insert(0, cb);
+        mLoadedCbDict[key].Insert(0, cb);
 
         handler = Addressables.LoadAssetAsync<T>(key);
-        handler.Completed += onLoadCompleted;
+        handler.Completed += (AsyncOperationHandle loadedHandler) =>
+        {
+            if (loadedHandler.Status == AsyncOperationStatus.Succeeded)
+            {
+                mAssetCacheDict[key] = loadedHandler;
+                if (mLoadedCbDict.ContainsKey(key) == false)
+                {
+                    Debug.LogError("资源加载完成，但回调已经清空");
+                    Addressables.Release(handler);
+                    return;
+                }
+
+                int count = mLoadedCbDict[key].Count;
+                for (int i = count - 1; i >= 0; i--)
+                {
+                    mLoadedCbDict[key][i](loadedHandler.Result as UnityEngine.Object);
+                }
+
+                mLoadedCbDict.Clear();
+            }
+        };
     }
 
     public static void LoadGameObject<T>(string key, Action<UnityEngine.Object> cb) where T : UnityEngine.Object
     {
+        if (mAssetRefDict.ContainsKey(key) == false)
+        {
+            mAssetRefDict[key] = 0;
+        }
         mAssetRefDict[key]++;
         
         if (mAssetCacheDict.ContainsKey(key))
@@ -57,16 +86,13 @@ public static class AssetManager
             {
                 cb((UnityEngine.Object)mAssetCacheDict[key].Result);
             }
-            else
-            {
-                AsyncOperationHandle handler = mAssetCacheDict[key];
-                if (mLoadedCbDict.ContainsKey(handler) == false)
-                {
-                    mLoadedCbDict[handler] = new List<Action<UnityEngine.Object>>();
-                }
-                mLoadedCbDict[handler].Insert(0, cb);
-            }
             return;
+            
+        }
+        
+        if (mLoadedCbDict.ContainsKey(key) == true)
+        {
+            mLoadedCbDict[key].Insert(0, cb);
         }
 
         LoadGameObjectAsync<T>(key, cb);
@@ -82,10 +108,7 @@ public static class AssetManager
 
         if (mAssetRefDict[key] == 0)
         {
-            if (mAssetCacheDict.ContainsKey(key))
-            {
-                Addressables.Release(mAssetCacheDict[key]);
-            }
+            mWaitReleaseList.Insert(0, key);
         }
     }
 }

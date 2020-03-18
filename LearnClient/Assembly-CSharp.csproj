@@ -56,11 +56,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\CSharp\AssetManager.cs" />
+    <Compile Include="Assets\CSharp\CommonMono.cs" />
+    <Compile Include="Assets\CSharp\Logic\MainPanel.cs" />
     <Compile Include="Assets\CSharp\Logic\ViewCompFirst.cs" />
     <Compile Include="Assets\CSharp\Logic\ViewCompSecond.cs" />
     <Compile Include="Assets\CSharp\Logic\ViewCompThird.cs" />
+    <Compile Include="Assets\CSharp\Timer.cs" />
     <Compile Include="Assets\CSharp\ViewComp.cs" />
     <Compile Include="Assets\CSharp\ViewMgr.cs" />
+    <Compile Include="Assets\CSharp\ViewMgrMono.cs" />
     <Compile Include="Assets\CSharp\ViewSetting.cs" />
     <Reference Include="UnityEditor.CacheServer">
       <HintPath>D:/LearnClinet/LearnClient/Library/ScriptAssemblies/UnityEditor.CacheServer.dll</HintPath>

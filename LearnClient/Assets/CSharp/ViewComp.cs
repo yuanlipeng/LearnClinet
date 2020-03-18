@@ -2,44 +2,48 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum ViewState
+{
+    Load,
+    EnterFinished,
+    ExitFinished,
+}
+
 public class ViewComp : MonoBehaviour
 {
     public GameObject HintRootGo;
     public GameObject MainGo;
     public string ViewName;
 
-    public bool IsOpen;
+    public ViewState CurViewStat = ViewState.Load;
+    public bool IsDestroyNow = false;
 
     public void SetAtLastSibling()
     {
         HintRootGo.transform.SetAsLastSibling();
     }
 
-    public bool IsLoaded()
+    public void Loaded()
     {
-        return (MainGo != null);
+        IsDestroyNow = false;
+
+        this.BuildUI();
+        this.AddClickListener();
     }
 
     public void Destory()
     {
-        StartCoroutine(destroyTimer());
-    }
-
-    IEnumerator destroyTimer()
-    {
-        ViewSetting view = ViewSetting.ViewDict[ViewName];
-        yield return new WaitForSeconds(view.WaitTime);
-        GameObject.Destroy(MainGo);
-        AssetManager.Release(view.Key);
+        this.RemoveClickListener();
+        this.DestroyUI();
     }
 
     public void Enter()
     {
         this.OnEnter();
 
-        MainGo.SetActive(true);
+        HintRootGo.SetActive(true);
 
-        PlayEnterAni();
+        PlayEnterAnimation();
     }
 
     public void Exit()
@@ -48,35 +52,35 @@ public class ViewComp : MonoBehaviour
         {
             return;
         }
-        this.OnExit();
+        this.RemoveEvent();
 
-        PlayExitAni();
-    }
-
-    IEnumerator onPlayAniEnded()
-    {
-        yield return new WaitForEndOfFrame();
-        yield return new WaitForEndOfFrame();
-        OnEnterFinished();
+        PlayExitAnimation();
     }
 
     public void OnPlayAniEnded()
     {
-        StartCoroutine(onPlayAniEnded());
-    }
+        AddEvent();
+        OnEnterFinished();
+        CurViewStat = ViewState.EnterFinished;
 
-    IEnumerator onExitAniEnded()
-    {
-        MainGo.SetActive(false);
-
-        yield return new WaitForEndOfFrame();
-        yield return new WaitForEndOfFrame();
-        OnExitFinished();
+        HintRootGo.SetActive(ViewMgr.Instance.IsSelfActive(ViewName));
     }
 
     public void OnExitAniEnded()
     {
-        StartCoroutine(onExitAniEnded());
+        HintRootGo.SetActive(false);
+        this.OnExit();
+        this.CurViewStat = ViewState.ExitFinished;
+    }
+
+    protected virtual void BuildUI()
+    {
+
+    }
+
+    protected virtual void AddClickListener()
+    {
+
     }
 
     protected virtual void OnEnter()
@@ -84,9 +88,14 @@ public class ViewComp : MonoBehaviour
 
     }
 
-    protected virtual void PlayEnterAni()
+    protected virtual void PlayEnterAnimation()
     {
         OnPlayAniEnded();
+    }
+
+    protected virtual void AddEvent()
+    {
+
     }
 
     protected virtual void OnEnterFinished()
@@ -94,17 +103,27 @@ public class ViewComp : MonoBehaviour
 
     }
 
+    protected virtual void RemoveEvent()
+    {
+
+    }
+
+    protected virtual void PlayExitAnimation()
+    {
+        OnExitAniEnded();
+    }
+
     protected virtual void OnExit()
     {
 
     }
 
-    protected virtual void PlayExitAni()
+    protected virtual void RemoveClickListener()
     {
-        OnExitAniEnded();
+
     }
 
-    protected virtual void OnExitFinished()
+    protected virtual void DestroyUI()
     {
 
     }
