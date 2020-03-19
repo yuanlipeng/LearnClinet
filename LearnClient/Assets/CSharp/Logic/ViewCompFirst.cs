@@ -15,15 +15,12 @@ public class ViewCompFirst : ViewComp
 
     protected override void BuildUI()
     {
-        //Debug.LogError(ViewName + " BuildUI ");
-
         viewAni = MainGo.GetComponent<Animation>();
         closeBtn = MainGo.transform.Find("Button").GetComponent<Button>();
     }
 
     protected override void AddClickListener()
     {
-        //Debug.LogError(ViewName + " AddClickListener ");
         closeBtn.onClick.AddListener(OnClickCloseBtn);
     }
 
@@ -34,10 +31,7 @@ public class ViewCompFirst : ViewComp
 
     protected override void PlayEnterAnimation()
     {
-        //Debug.LogError(ViewName + " PlayEnterAnimation ");
-        //base.PlayEnterAnimation();
         viewAni.Play("View_1_Open");
-        //StartCoroutine(EnterAniEnded());
         Timer.Instance.AddTimer("View_1_EnterAniEnded", OnPlayAniEnded, 0.5f, false);
     }
 

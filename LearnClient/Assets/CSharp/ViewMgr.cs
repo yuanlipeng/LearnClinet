@@ -39,8 +39,8 @@ public class ViewMgr
     {
         Transform uiRootTrans = GameObject.Find("UIRoot").transform;
 
-        mUIRootDict[ViewLayer.Bottom] = uiRootTrans.Find("Bottom");
-        mUIRootDict[ViewLayer.Mid] = uiRootTrans.Find("Mid");
+        mUIRootDict[ViewLayer.Logic] = uiRootTrans.Find("Logic");
+        mUIRootDict[ViewLayer.Guide] = uiRootTrans.Find("Guide");
         mUIRootDict[ViewLayer.Top] = uiRootTrans.Find("Top");
 
         mHintRootItem = uiRootTrans.Find("HintRootItem").gameObject;
@@ -121,63 +121,17 @@ public class ViewMgr
 
     private void makeViewEnable()
     {
-        for(int i=0;i<mViewStack.Count;i++)
-        {
-            Debug.LogError(" ViewStack " + mViewStack[i]);
-        }
+        //for(int i=0;i<mViewStack.Count;i++)
+        //{
+        //    Debug.LogError(" ViewStack " + mViewStack[i]);
+        //}
         if (mViewStack.Count == 0)
         {
             return;
         }
 
-        //int showIndex = mViewStack.Count - 1;
-        //string viewName = mViewStack[showIndex];
-        //ViewSetting viewSet = ViewSetting.ViewDict[viewName];
-        //ViewComp topViewComp = mViewCompDict[viewName];
-
-        //topViewComp.SetAtLastSibling();
-        //if (topViewComp.CurViewStat == ViewState.Load)
-        //{
-        //    topViewComp.Enter();
-        //}
-        //else
-        //{
-        //    topViewComp.HintRootGo.SetActive(true);
-        //}
-
-        //if(viewSet.ViewType == ViewType.Window)
-        //{
-        //    for (int i = showIndex - 1; i >= 0; i--)
-        //    {
-        //        ViewSetting curViewSet = ViewSetting.ViewDict[mViewStack[i]];
-        //        mViewCompDict[mViewStack[i]].HintRootGo.SetActive(true);
-
-        //        if (curViewSet.ViewType == ViewType.Full)
-        //        {
-        //            return;
-        //        }
-        //    }
-        //}
-        //else if(viewSet.ViewType == ViewType.Full)
-        //{
-        //    for (int i = showIndex - 1; i >= 0; i--)
-        //    {
-        //        ViewSetting curViewSet = ViewSetting.ViewDict[mViewStack[i]];
-
-        //        if (mViewCompDict[mViewStack[i]].CurViewStat == ViewState.EnterFinished)
-        //        {
-        //            mViewCompDict[mViewStack[i]].HintRootGo.SetActive(false);
-        //        }
-
-        //        if (curViewSet.ViewType == ViewType.Full)
-        //        {
-        //            return;
-        //        }
-        //    }
-        //}
-
-        judgeLayerState(ViewLayer.Bottom);
-        judgeLayerState(ViewLayer.Mid);
+        judgeLayerState(ViewLayer.Logic);
+        judgeLayerState(ViewLayer.Guide);
         judgeLayerState(ViewLayer.Top);
     }
 
