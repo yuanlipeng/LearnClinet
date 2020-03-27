@@ -8,15 +8,21 @@
 //------------------------------------------------------------------------------
 public static class GameComponentsLookup {
 
+    public const int BoxColliderComp = 0;
+    public const int EntityInfoComp = 1;
+    public const int MoveComp = 2;
 
-
-    public const int TotalComponents = 0;
+    public const int TotalComponents = 3;
 
     public static readonly string[] componentNames = {
-
+        "BoxColliderComp",
+        "EntityInfoComp",
+        "MoveComp"
     };
 
     public static readonly System.Type[] componentTypes = {
-
+        typeof(BoxColliderComp),
+        typeof(EntityInfoComp),
+        typeof(MoveComp)
     };
 }
