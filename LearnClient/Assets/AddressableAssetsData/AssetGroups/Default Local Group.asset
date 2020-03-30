@@ -21,17 +21,38 @@ MonoBehaviour:
     m_Address: Assets/Src/Prefab/View_2.prefab
     m_ReadOnly: 0
     m_SerializedLabels: []
-    m_mainAssetType: 
+    m_mainAssetType: UnityEngine.GameObject, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  - m_GUID: 79bccca5f0647fe409a2a43261624edb
+    m_Address: Assets/Hero Fighter/model/prefab/Fighter.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    m_mainAssetType: UnityEngine.GameObject, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
   - m_GUID: 8fff7f1d22fae14499755db9afe1164e
     m_Address: Assets/Src/Prefab/View_3.prefab
     m_ReadOnly: 0
     m_SerializedLabels: []
-    m_mainAssetType: 
+    m_mainAssetType: UnityEngine.GameObject, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  - m_GUID: 9da496c94e15ecd458337447e71b4be2
+    m_Address: Assets/Hero Fighter/model/prefab/Fighter Devil.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    m_mainAssetType: UnityEngine.GameObject, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  - m_GUID: d4cb9b882e2a3e845937efe16b77209d
+    m_Address: Assets/Hero Fighter/model/prefab/Cube.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    m_mainAssetType: UnityEngine.GameObject, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
   - m_GUID: d93e96d4ba582ed48ac75ea0a66e2fe1
     m_Address: Assets/Src/Prefab/View_1.prefab
     m_ReadOnly: 0
     m_SerializedLabels: []
-    m_mainAssetType: 
+    m_mainAssetType: UnityEngine.GameObject, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: a831eeff3a549694382980026308b3af, type: 2}
   m_SchemaSet:

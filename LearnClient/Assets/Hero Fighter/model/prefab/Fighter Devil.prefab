@@ -230,7 +230,7 @@ Animator:
   m_GameObject: {fileID: 141338}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: e67586301e35f524dbd77309dc957493, type: 3}
-  m_Controller: {fileID: 9100000, guid: d06d55d1e8efc47458bce25ea71ec085, type: 2}
+  m_Controller: {fileID: 9100000, guid: c49c4a9cb8ac349469ad6b66a759d184, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -292,7 +292,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 141344}
-  m_LocalRotation: {x: -0.50826925, y: 0.5191245, z: 0.48655626, w: 0.4852165}
+  m_LocalRotation: {x: -0.5082693, y: 0.51912457, z: 0.4865563, w: 0.48521653}
   m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1.0000001, z: 1.0000001}
   m_Children:
@@ -864,7 +864,13 @@ SkinnedMeshRenderer:
   m_Bones:
   - {fileID: 441346}
   - {fileID: 441368}
-  m_BlendShapeWeights: []
+  m_BlendShapeWeights:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
   m_RootBone: {fileID: 441368}
   m_AABB:
     m_Center: {x: -0.17121008, y: 0.021445319, z: 0.013901219}

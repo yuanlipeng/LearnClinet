@@ -11,21 +11,29 @@ public partial class GameEntity {
     public MoveComp moveComp { get { return (MoveComp)GetComponent(GameComponentsLookup.MoveComp); } }
     public bool hasMoveComp { get { return HasComponent(GameComponentsLookup.MoveComp); } }
 
-    public void AddMoveComp(UnityEngine.Vector3 newCurPos, UnityEngine.Vector3 newDestPos, float newSpeed) {
+    public void AddMoveComp(UnityEngine.Vector3 newCurPos, UnityEngine.Vector3 newDestPos, float newSpeed, bool newIsArrived, UnityEngine.Vector3 newForward, bool newIsAniMove, bool newIsBlock) {
         var index = GameComponentsLookup.MoveComp;
         var component = (MoveComp)CreateComponent(index, typeof(MoveComp));
         component.CurPos = newCurPos;
         component.DestPos = newDestPos;
         component.Speed = newSpeed;
+        component.IsArrived = newIsArrived;
+        component.Forward = newForward;
+        component.IsAniMove = newIsAniMove;
+        component.IsBlock = newIsBlock;
         AddComponent(index, component);
     }
 
-    public void ReplaceMoveComp(UnityEngine.Vector3 newCurPos, UnityEngine.Vector3 newDestPos, float newSpeed) {
+    public void ReplaceMoveComp(UnityEngine.Vector3 newCurPos, UnityEngine.Vector3 newDestPos, float newSpeed, bool newIsArrived, UnityEngine.Vector3 newForward, bool newIsAniMove, bool newIsBlock) {
         var index = GameComponentsLookup.MoveComp;
         var component = (MoveComp)CreateComponent(index, typeof(MoveComp));
         component.CurPos = newCurPos;
         component.DestPos = newDestPos;
         component.Speed = newSpeed;
+        component.IsArrived = newIsArrived;
+        component.Forward = newForward;
+        component.IsAniMove = newIsAniMove;
+        component.IsBlock = newIsBlock;
         ReplaceComponent(index, component);
     }
 

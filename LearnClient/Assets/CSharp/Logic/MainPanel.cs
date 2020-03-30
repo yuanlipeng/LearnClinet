@@ -17,6 +17,7 @@ public class MainPanel : MonoBehaviour
     {
         ViewSetting.Init();
         ViewMgr.Instance.Init();
+        BattleMgr.Instance.Open();
 
         btnOpen1.onClick.AddListener(OnClickOpenBtn1);
         btnOpen2.onClick.AddListener(OnClickOpenBtn2);

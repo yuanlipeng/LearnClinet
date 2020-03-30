@@ -56,7 +56,7 @@ public static class AssetManager
                 mAssetCacheDict[key] = loadedHandler;
                 if (mLoadedCbDict.ContainsKey(key) == false)
                 {
-                    Debug.LogError("资源加载完成，但回调已经清空");
+                    Debug.LogError("资源加载完成，但回调已经清空" + key);
                     Addressables.Release(handler);
                     return;
                 }
@@ -67,13 +67,15 @@ public static class AssetManager
                     mLoadedCbDict[key][i](loadedHandler.Result as UnityEngine.Object);
                 }
 
-                mLoadedCbDict.Clear();
+                mLoadedCbDict[key].Clear();
             }
         };
     }
 
     public static void LoadGameObject<T>(string key, Action<UnityEngine.Object> cb) where T : UnityEngine.Object
     {
+        mWaitReleaseList.Remove(key);
+
         if (mAssetRefDict.ContainsKey(key) == false)
         {
             mAssetRefDict[key] = 0;
@@ -88,11 +90,6 @@ public static class AssetManager
             }
             return;
             
-        }
-        
-        if (mLoadedCbDict.ContainsKey(key) == true)
-        {
-            mLoadedCbDict[key].Insert(0, cb);
         }
 
         LoadGameObjectAsync<T>(key, cb);

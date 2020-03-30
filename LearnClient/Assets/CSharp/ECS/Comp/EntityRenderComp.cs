@@ -4,7 +4,7 @@ using UnityEngine;
 using Entitas;
 
 [Game]
-public class BoxColliderComp : IComponent
+public class EntityRenderComp : IComponent
 {
-    public float ColliderX;
+    public GameObject MainGo;
 }

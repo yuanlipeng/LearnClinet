@@ -11,17 +11,21 @@ public partial class GameEntity {
     public EntityInfoComp entityInfoComp { get { return (EntityInfoComp)GetComponent(GameComponentsLookup.EntityInfoComp); } }
     public bool hasEntityInfoComp { get { return HasComponent(GameComponentsLookup.EntityInfoComp); } }
 
-    public void AddEntityInfoComp(int newId) {
+    public void AddEntityInfoComp(int newId, EntityType newEntityType, int newConfigId) {
         var index = GameComponentsLookup.EntityInfoComp;
         var component = (EntityInfoComp)CreateComponent(index, typeof(EntityInfoComp));
         component.Id = newId;
+        component.EntityType = newEntityType;
+        component.ConfigId = newConfigId;
         AddComponent(index, component);
     }
 
-    public void ReplaceEntityInfoComp(int newId) {
+    public void ReplaceEntityInfoComp(int newId, EntityType newEntityType, int newConfigId) {
         var index = GameComponentsLookup.EntityInfoComp;
         var component = (EntityInfoComp)CreateComponent(index, typeof(EntityInfoComp));
         component.Id = newId;
+        component.EntityType = newEntityType;
+        component.ConfigId = newConfigId;
         ReplaceComponent(index, component);
     }
 

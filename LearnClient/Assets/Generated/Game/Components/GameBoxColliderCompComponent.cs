@@ -11,14 +11,14 @@ public partial class GameEntity {
     public BoxColliderComp boxColliderComp { get { return (BoxColliderComp)GetComponent(GameComponentsLookup.BoxColliderComp); } }
     public bool hasBoxColliderComp { get { return HasComponent(GameComponentsLookup.BoxColliderComp); } }
 
-    public void AddBoxColliderComp(int newColliderX) {
+    public void AddBoxColliderComp(float newColliderX) {
         var index = GameComponentsLookup.BoxColliderComp;
         var component = (BoxColliderComp)CreateComponent(index, typeof(BoxColliderComp));
         component.ColliderX = newColliderX;
         AddComponent(index, component);
     }
 
-    public void ReplaceBoxColliderComp(int newColliderX) {
+    public void ReplaceBoxColliderComp(float newColliderX) {
         var index = GameComponentsLookup.BoxColliderComp;
         var component = (BoxColliderComp)CreateComponent(index, typeof(BoxColliderComp));
         component.ColliderX = newColliderX;
