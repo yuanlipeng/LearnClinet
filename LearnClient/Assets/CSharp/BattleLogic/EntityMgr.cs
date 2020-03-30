@@ -13,12 +13,15 @@ public class EntityMgr
 
     private Dictionary<int, GameEntity> mEntityCacheDict = new Dictionary<int, GameEntity>();
 
+    public GameObject MainCamera;
+
     private int mBulletIndex = 13;
 
     public void Init()
     {
         mContextsInstance = Contexts.sharedInstance;
         mHintRoot = GameObject.Find("3DRoot").gameObject;
+        MainCamera = GameObject.Find("MainCamera").gameObject;
     }
 
     public Contexts GetContexts()

@@ -9,7 +9,7 @@ public class EntityTransformRenderSystem : IExecuteSystem
     {
         Contexts contexts = EntityMgr.Instance.GetContexts();
         IGroup<GameEntity> group = contexts.game.GetGroup(GameMatcher.AllOf(GameMatcher.MoveComp, GameMatcher.EntityRenderComp));
-        foreach(var item in group)
+        foreach (var item in group)
         {
             item.entityRenderComp.MainGo.transform.position = item.moveComp.CurPos;
             item.entityRenderComp.MainGo.transform.LookAt(item.moveComp.DestPos);
@@ -25,5 +25,7 @@ public class EntityTransformRenderSystem : IExecuteSystem
                 item.entityRenderComp.MainGo.transform.LookAt(entity.entityRenderComp.MainGo.transform.position);
             }
         }
+
+        EntityMgr.Instance.MainCamera.GetComponent<MainCameraFollow>().UpdatePos();
     }
 }
