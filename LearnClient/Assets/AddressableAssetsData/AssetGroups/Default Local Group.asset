@@ -23,6 +23,18 @@ MonoBehaviour:
     m_SerializedLabels: []
     m_mainAssetType: UnityEngine.GameObject, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
+  - m_GUID: 47a809d0c6c170348970aa70688ce3ef
+    m_Address: Assets/Src/Prefab/LoginPanel.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    m_mainAssetType: UnityEngine.GameObject, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  - m_GUID: 6dde496cf4d77b2448c34f2fe85041df
+    m_Address: Assets/Src/Prefab/ScenePrefab.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    m_mainAssetType: UnityEngine.GameObject, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
   - m_GUID: 79bccca5f0647fe409a2a43261624edb
     m_Address: Assets/Hero Fighter/model/prefab/Fighter.prefab
     m_ReadOnly: 0
@@ -43,6 +55,12 @@ MonoBehaviour:
       Culture=neutral, PublicKeyToken=null
   - m_GUID: d4cb9b882e2a3e845937efe16b77209d
     m_Address: Assets/Hero Fighter/model/prefab/Cube.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    m_mainAssetType: UnityEngine.GameObject, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  - m_GUID: d84824ca07639f140b4973fae3816158
+    m_Address: Assets/Src/Prefab/MainPanel.prefab
     m_ReadOnly: 0
     m_SerializedLabels: []
     m_mainAssetType: UnityEngine.GameObject, UnityEngine.CoreModule, Version=0.0.0.0,

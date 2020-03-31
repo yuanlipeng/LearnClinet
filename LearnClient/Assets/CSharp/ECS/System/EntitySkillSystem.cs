@@ -15,8 +15,16 @@ public class EntitySkillSystem : IExecuteSystem
             SkillSetting skillSetting = SkillSetting.SkillSettingDict[putedSkillInfos[i].SkillId];
             if (putedSkillInfos[i].PutSkillTime + skillSetting.SkillAttackTime <= Time.time)
             {
-                HashSet<GameEntity> gameEntities = contexts.game.GetEntitiesWithEntityInfoCompEntityType(EntityType.Monster);
+                HashSet<GameEntity> gameEntities = null;
                 GameEntity entity = EntityMgr.Instance.GetGameEntity(putedSkillInfos[i].EntityId);
+                if(entity.entityInfoComp.EntityType == EntityType.MainPlayer)
+                {
+                    gameEntities = contexts.game.GetEntitiesWithEntityInfoCompEntityType(EntityType.Monster);
+                }
+                else
+                {
+                    gameEntities = contexts.game.GetEntitiesWithEntityInfoCompEntityType(EntityType.MainPlayer);
+                }
                 foreach (var item in gameEntities)
                 {
                     Vector3 forward = entity.moveComp.Forward;
@@ -54,13 +62,15 @@ public class EntitySkillSystem : IExecuteSystem
 
                     if(isAttacked == true)
                     {
-                        BattleRenderCommand command = new BattleRenderCommand();
-                        command.EntityId = item.entityInfoComp.Id;
-                        command.AniName = "attacked";
-                        BattleRenderMgr.Instance.AddCommand(command); 
+                        BattleCommand command1 = new BattleCommand();
+                        command1.CommandType = BattleCommandType.PlayAni;
+                        command1.EntityId = item.entityInfoComp.Id;
+                        command1.PlayAniInfo = new BattleCommand.CommandPlayAniInfo();
+                        command1.PlayAniInfo.AniName = "attacked";
+                        BattleLoop.Instance.AddCommand(command1);
                     }
-                    removeList.Insert(0, putedSkillInfos[i]);
                 }
+                removeList.Insert(0, putedSkillInfos[i]);
             }
         }
 

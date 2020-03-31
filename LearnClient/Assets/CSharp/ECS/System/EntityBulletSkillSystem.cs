@@ -20,8 +20,10 @@ public class EntityBulletSkillSystem : IExecuteSystem
                 if (dist <= 1.0f)
                 {
                     BattleCommand command = new BattleCommand();
-                    command.CommandType = BattleCommandType.Attacked;
+                    command.CommandType = BattleCommandType.PlayAni;
                     command.EntityId = monster.entityInfoComp.Id;
+                    command.PlayAniInfo = new BattleCommand.CommandPlayAniInfo();
+                    command.PlayAniInfo.AniName = "attacked";
                     BattleLoop.Instance.AddCommand(command);
                 }
             }

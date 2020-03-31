@@ -13,5 +13,5 @@ public enum BattleCommandType
 {
     Move,
     PutSkill,
-    Attacked,
+    PlayAni,
 }

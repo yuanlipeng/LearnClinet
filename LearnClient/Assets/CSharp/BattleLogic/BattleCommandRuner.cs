@@ -9,6 +9,16 @@ public class BattleCommandRuner
         public int EntityId;
         public float PutSkillTime;
         public int SkillId;
+
+        public bool IsTimeOver()
+        {
+            SkillSetting skillSetting = SkillSetting.SkillSettingDict[SkillId];
+            if (PutSkillTime + skillSetting.SkillAttackTime <= Time.time)
+            {
+                return true;
+            }
+            return false;
+        }
     }
 
     public static BattleCommandRuner Instance = new BattleCommandRuner();
@@ -20,18 +30,21 @@ public class BattleCommandRuner
         int entityId = command.EntityId;
         if(command.CommandType == BattleCommandType.Move)
         {
+            EntitySetting setting = EntitySetting.Setting[entityId];
             GameEntity gameEntity = EntityMgr.Instance.GetGameEntity(entityId);
             MoveComp moveComp = gameEntity.GetComponent(GameComponentsLookup.MoveComp) as MoveComp;
             moveComp.DestPos = command.MoveInfo.DestPos;
             moveComp.IsArrived = false;
-            moveComp.Speed = 0.1f;
+            moveComp.Speed = setting.MoveSpeed;
             moveComp.IsAniMove = false;
             moveComp.Forward = Vector3.Normalize(moveComp.DestPos - moveComp.CurPos);
 
-            BattleRenderCommand renderCommand = new BattleRenderCommand();
-            renderCommand.EntityId = entityId;
-            renderCommand.AniName = "walk";
-            BattleRenderMgr.Instance.AddCommand(renderCommand);
+            BattleCommand command1 = new BattleCommand();
+            command1.CommandType = BattleCommandType.PlayAni;
+            command1.EntityId = entityId;
+            command1.PlayAniInfo = new BattleCommand.CommandPlayAniInfo();
+            command1.PlayAniInfo.AniName = "walk";
+            BattleLoop.Instance.AddCommand(command1);
         }
         else if(command.CommandType == BattleCommandType.PutSkill)
         {
@@ -64,15 +77,8 @@ public class BattleCommandRuner
 
             if(setting.IsBulletShoot == true)
             {
-                //UnitBullet bullet = EntirtyMgr.Instance.CreateBullet();
-                //MoveComp bulletMoveComp = bullet.GetComp(CompType.Move) as MoveComp;
-                //bulletMoveComp.SetCurPos(entity.HintRootGo.transform.position);
-                //bulletMoveComp.SetSpeed(0.5f);
-                //bulletMoveComp.SetDestPos(new Vector3(0, 0, 0));
-
-                ////moveComp.SetIsStop(true);
                 moveComp.IsBlock = true;
-                Timer.Instance.AddTimer("Move", () =>
+                Timer.Instance.AddTimer(BattleTimerName.BulletMove, () =>
                 {
                     Contexts contexts = EntityMgr.Instance.GetContexts();
                     HashSet<GameEntity> gameEntities = contexts.game.GetEntitiesWithEntityInfoCompEntityType(EntityType.Monster);
@@ -97,11 +103,16 @@ public class BattleCommandRuner
                     }
 
                     moveComp.IsBlock = false;
-                    BattleRenderCommand newRenderCommand = new BattleRenderCommand();
-                    newRenderCommand.EntityId = entityId;
-                    newRenderCommand.AniName = "walk";
-                    BattleRenderMgr.Instance.AddCommand(newRenderCommand);
 
+                    if(gameEntity.moveComp.IsArrived == false)
+                    {
+                        BattleCommand command2 = new BattleCommand();
+                        command2.CommandType = BattleCommandType.PlayAni;
+                        command2.EntityId = entityId;
+                        command2.PlayAniInfo = new BattleCommand.CommandPlayAniInfo();
+                        command2.PlayAniInfo.AniName = "walk";
+                        BattleLoop.Instance.AddCommand(command2);
+                    }
                 }, 0.6f, false);
             }
             else
@@ -109,16 +120,31 @@ public class BattleCommandRuner
                 mPutedSkillInfos.Insert(0, skillInfo);
             }
 
-            BattleRenderCommand renderCommand = new BattleRenderCommand();
-            renderCommand.EntityId = entityId;
-            renderCommand.AniName = setting.AniName;
-            BattleRenderMgr.Instance.AddCommand(renderCommand);
+            BattleCommand command1 = new BattleCommand();
+            command1.CommandType = BattleCommandType.PlayAni;
+            command1.EntityId = entityId;
+            command1.PlayAniInfo = new BattleCommand.CommandPlayAniInfo();
+            command1.PlayAniInfo.AniName = setting.AniName;
+            BattleLoop.Instance.AddCommand(command1);
         }
-        else if(command.CommandType == BattleCommandType.Attacked)
+        else if(command.CommandType == BattleCommandType.PlayAni)
         {
+            if(command.PlayAniInfo.AniName.Equals("attacked") == true)
+            {
+                GameEntity gameEntity = EntityMgr.Instance.GetGameEntity(entityId);
+                gameEntity.moveComp.IsArrived = true;
+                Timer.Instance.AddTimer(BattleTimerName.AttackedTimer, () =>
+                {
+                    if(gameEntity.hasEntityAiComp == true)
+                    {
+                        gameEntity.entityAiComp.IsAIEnded = true;
+                    }
+                }, 1.0f, false);
+            }
+
             BattleRenderCommand renderCommand = new BattleRenderCommand();
             renderCommand.EntityId = entityId;
-            renderCommand.AniName = "attacked";
+            renderCommand.AniName = command.PlayAniInfo.AniName;
             BattleRenderMgr.Instance.AddCommand(renderCommand);
         }
     }
@@ -131,5 +157,17 @@ public class BattleCommandRuner
     public void RemovePutedSkillInfo(PutedSkillInfo info)
     {
         mPutedSkillInfos.Remove(info);
+    }
+
+    public bool IsPuttingSkill(int entityId)
+    {
+        for(int i = 0; i < mPutedSkillInfos.Count; i++)
+        {
+            if(mPutedSkillInfos[i].EntityId == entityId )
+            {
+                return true;
+            }
+        }
+        return false;
     }
 }

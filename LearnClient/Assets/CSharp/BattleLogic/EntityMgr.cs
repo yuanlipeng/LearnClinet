@@ -24,6 +24,36 @@ public class EntityMgr
         MainCamera = GameObject.Find("MainCamera").gameObject;
     }
 
+    public void Reset()
+    {
+        List<int> removeList = new List<int>();
+        foreach(var item in mEntityCacheDict)
+        {
+            if (item.Value.hasEntityInfoComp == true)
+            {
+                EntitySetting entitySetting = EntitySetting.Setting[item.Value.entityInfoComp.ConfigId];
+                AssetManager.Release(entitySetting.ResPath);
+                if (item.Value.hasEntityRenderComp == true)
+                {
+                    GameObject.Destroy(item.Value.entityRenderComp.MainGo);
+                }
+            }
+            removeList.Insert(0, item.Key);
+        }
+
+        for(int i = 0; i < removeList.Count; i++)
+        {
+            GameEntity entity = mEntityCacheDict[removeList[i]];
+            mEntityCacheDict.Remove(removeList[i]);
+            entity.Release(EntityMgr.Instance);
+        }
+
+        removeList.Clear();
+        mEntityCacheDict.Clear();
+
+        mContextsInstance.game.DestroyAllEntities();
+    }
+
     public Contexts GetContexts()
     {
         return mContextsInstance;
@@ -32,6 +62,13 @@ public class EntityMgr
     public void CreateMainPlayer()
     {
         CreateEntity(1);
+    }
+
+    public GameEntity CreateMonster(int entityId)
+    {
+        GameEntity entity = CreateEntity(entityId);
+        entity.AddEntityAiComp(2.5f, 2.5f, true);
+        return entity;
     }
 
     public GameEntity CreateEntity(int entityId)
@@ -61,7 +98,7 @@ public class EntityMgr
         GameEntity entity = mContextsInstance.game.CreateEntity();
         EntitySetting setting = EntitySetting.Setting[13];
 
-        entity.AddEntityInfoComp(setting.EntityId, setting.EntityType, 13);
+        entity.AddEntityInfoComp(mBulletIndex, setting.EntityType, 13);
         entity.AddEntityBulletMoveComp(setting.BornPos, 0, setting.MoveSpeed, false);
         entity.AddBoxColliderComp(setting.BoxColliderR);
 
@@ -70,9 +107,12 @@ public class EntityMgr
 
         AssetManager.LoadGameObject<GameObject>(setting.ResPath, (UnityEngine.Object obj) =>
         {
-            GameObject model = GameObject.Instantiate<GameObject>((GameObject)obj);
-            model.transform.SetParent(mHintRoot.transform);
-            entity.ReplaceEntityRenderComp((GameObject)model);
+            if (entity.retainCount > 0)
+            {
+                GameObject model = GameObject.Instantiate<GameObject>((GameObject)obj);
+                model.transform.SetParent(mHintRoot.transform);
+                entity.AddEntityRenderComp((GameObject)model);
+            }
         });
 
         mBulletIndex++;
@@ -89,7 +129,10 @@ public class EntityMgr
     {
         EntitySetting entitySetting = EntitySetting.Setting[entity.entityInfoComp.ConfigId];
         mEntityCacheDict.Remove(entity.entityInfoComp.Id);
-        GameObject.Destroy(entity.entityRenderComp.MainGo);
+        if (entity.hasEntityRenderComp == true)
+        {
+            GameObject.Destroy(entity.entityRenderComp.MainGo);
+        }
         AssetManager.Release(entitySetting.ResPath);
         entity.Release(EntityMgr.Instance);
         entity.Destroy();

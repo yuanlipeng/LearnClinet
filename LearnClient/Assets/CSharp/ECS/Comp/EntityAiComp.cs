@@ -8,4 +8,5 @@ public class EntityAiComp : IComponent
 {
     public float ScopeX;
     public float ScopeY;
+    public bool IsAIEnded;
 }

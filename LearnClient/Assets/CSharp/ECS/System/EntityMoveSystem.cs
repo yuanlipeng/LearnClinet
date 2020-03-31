@@ -40,13 +40,19 @@ public class EntityMoveSystem : IExecuteSystem
         {
             entity.moveComp.CurPos = entity.moveComp.DestPos;
             entity.moveComp.IsArrived = true;
+            if(entity.hasEntityAiComp == true)
+            {
+                entity.entityAiComp.IsAIEnded = true;
+            }
 
             if(entity.moveComp.IsAniMove == false) 
             {
-                BattleRenderCommand command = new BattleRenderCommand();
-                command.EntityId = entity.entityInfoComp.Id;
-                command.AniName = "idel";
-                BattleRenderMgr.Instance.AddCommand(command);
+                BattleCommand command1 = new BattleCommand();
+                command1.CommandType = BattleCommandType.PlayAni;
+                command1.EntityId = entity.entityInfoComp.Id;
+                command1.PlayAniInfo = new BattleCommand.CommandPlayAniInfo();
+                command1.PlayAniInfo.AniName = "idel";
+                BattleLoop.Instance.AddCommand(command1);
             }
         }
         else

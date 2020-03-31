@@ -12,5 +12,6 @@ public class BattleSystems : Feature
         Add(new EntitySkillSystem());
         Add(new EntityBulletMoveSystem());
         Add(new EntityBulletSkillSystem());
+        Add(new EntityAISystem());
     }
 }

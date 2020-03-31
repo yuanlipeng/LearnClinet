@@ -37,6 +37,8 @@ public class ViewMgr
 
     public void Init()
     {
+        ViewSetting.Init();
+
         Transform uiRootTrans = GameObject.Find("UIRoot").transform;
 
         mUIRootDict[ViewLayer.Logic] = uiRootTrans.Find("Logic");

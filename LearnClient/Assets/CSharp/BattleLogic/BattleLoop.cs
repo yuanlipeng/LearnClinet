@@ -11,6 +11,7 @@ public class BattleLoop
     private string mTimerStr = "BattleLoop";
 
     private List<BattleCommand> mBattleCommandList = new List<BattleCommand>();
+    private List<BattleCommand> mCacheCommandList = new List<BattleCommand>();
     private List<BattleRenderCommand> mBattleRenderCommandList = new List<BattleRenderCommand>();
 
     private Systems mBattleSystem;
@@ -19,6 +20,14 @@ public class BattleLoop
         Timer.Instance.AddTimer(mTimerStr, loop, 1.0f / mFrameRate, true);
 
         mBattleSystem = new BattleSystems();
+        mBattleSystem.Initialize();
+    }
+
+    public void Reset()
+    {
+        Timer.Instance.RemoveTimer(mTimerStr);
+        GameObject.Destroy(GameObject.Find("Battle Systems"));
+        mBattleSystem = null;
     }
 
     private void loop()
@@ -31,8 +40,15 @@ public class BattleLoop
         mBattleCommandList.Clear();
 
         mBattleSystem.Execute();
+        mBattleSystem.Cleanup();
 
         BattleRenderMgr.Instance.Render();
+
+        for(int i = 0; i < mCacheCommandList.Count; i++)
+        {
+            mBattleCommandList.Insert(0, mCacheCommandList[i]);
+        }
+        mCacheCommandList.Clear();
     }
 
     public List<BattleCommand> GetBattleCommands()
@@ -47,7 +63,7 @@ public class BattleLoop
 
     public void AddCommand(BattleCommand command)
     {
-        mBattleCommandList.Insert(0, command);
+        mCacheCommandList.Insert(0, command);
     }
 
     public void AddRenderCommand(BattleRenderCommand command)

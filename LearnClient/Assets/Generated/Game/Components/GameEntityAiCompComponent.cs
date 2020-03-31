@@ -11,19 +11,21 @@ public partial class GameEntity {
     public EntityAiComp entityAiComp { get { return (EntityAiComp)GetComponent(GameComponentsLookup.EntityAiComp); } }
     public bool hasEntityAiComp { get { return HasComponent(GameComponentsLookup.EntityAiComp); } }
 
-    public void AddEntityAiComp(float newScopeX, float newScopeY) {
+    public void AddEntityAiComp(float newScopeX, float newScopeY, bool newIsAIEnded) {
         var index = GameComponentsLookup.EntityAiComp;
         var component = (EntityAiComp)CreateComponent(index, typeof(EntityAiComp));
         component.ScopeX = newScopeX;
         component.ScopeY = newScopeY;
+        component.IsAIEnded = newIsAIEnded;
         AddComponent(index, component);
     }
 
-    public void ReplaceEntityAiComp(float newScopeX, float newScopeY) {
+    public void ReplaceEntityAiComp(float newScopeX, float newScopeY, bool newIsAIEnded) {
         var index = GameComponentsLookup.EntityAiComp;
         var component = (EntityAiComp)CreateComponent(index, typeof(EntityAiComp));
         component.ScopeX = newScopeX;
         component.ScopeY = newScopeY;
+        component.IsAIEnded = newIsAIEnded;
         ReplaceComponent(index, component);
     }
 

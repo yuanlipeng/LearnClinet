@@ -9,6 +9,7 @@ public class BattleCommand
 
     public CommandMoveInfo MoveInfo;
     public CommandPutSkillInfo PutSkillInfo;
+    public CommandPlayAniInfo PlayAniInfo;
 
     public class CommandMoveInfo
     {
@@ -18,6 +19,11 @@ public class BattleCommand
     public class CommandPutSkillInfo
     {
         public int SkillId;
+    }
+
+    public class CommandPlayAniInfo
+    {
+        public string AniName;
     }
 }
 

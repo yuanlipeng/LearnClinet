@@ -35,7 +35,7 @@ public class InputClick : MonoBehaviour
                     command.EntityId = 1;
                     command.CommandType = BattleCommandType.Move;
                     command.MoveInfo = new BattleCommand.CommandMoveInfo();
-                    command.MoveInfo.DestPos = hint.point;
+                    command.MoveInfo.DestPos = new Vector3(hint.point.x, 0, hint.point.z);
 
                     BattleLoop.Instance.AddCommand(command);
                 }

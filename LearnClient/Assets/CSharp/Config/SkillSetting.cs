@@ -42,7 +42,7 @@ public class SkillSetting
 
     public static void Init()
     {
-        SkillSetting skill101 = new SkillSetting(101, "attack101", true, false, false, 1.0f, 1.0f, 1.0f, 0.4f, true);
+        SkillSetting skill101 = new SkillSetting(101, "attack101", true, false, false, 1.5f, 1.5f, 1.0f, 0.5f, true);
         SkillSettingDict[101] = skill101;
 
         SkillSetting skill102 = new SkillSetting(102, "attack102", true, true, false, 0.0f, 0.0f, 1.0f, 0.7f, false);

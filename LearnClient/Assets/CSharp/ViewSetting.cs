@@ -16,6 +16,12 @@ public enum ViewType
     Window,
 }
 
+public class ViewNames
+{
+    public static string Login = "Login";
+    public static string Main = "Main";
+}
+
 public class ViewSetting
 {
     public string Key;
@@ -39,13 +45,10 @@ public class ViewSetting
     {
         ViewSetting view = null;
         
-        view = new ViewSetting("Assets/Src/Prefab/View_1.prefab", (mainGo)=> { return mainGo.AddComponent<ViewCompFirst>(); }, false, ViewLayer.Logic, ViewType.Full);
-        ViewDict["View_1"] = view;
+        view = new ViewSetting("Assets/Src/Prefab/LoginPanel.prefab", (mainGo)=> { return mainGo.AddComponent<LoginView>(); }, false, ViewLayer.Logic, ViewType.Full);
+        ViewDict[ViewNames.Login] = view;
 
-        view = new ViewSetting("Assets/Src/Prefab/View_2.prefab", (mainGo) => { return mainGo.AddComponent<ViewCompSecond>(); }, false, ViewLayer.Guide, ViewType.Window);
-        ViewDict["View_2"] = view;
-
-        view = new ViewSetting("Assets/Src/Prefab/View_3.prefab", (mainGo) => { return mainGo.AddComponent<ViewCompThird>(); }, true, ViewLayer.Top, ViewType.Full);
-        ViewDict["View_3"] = view;
+        view = new ViewSetting("Assets/Src/Prefab/MainPanel.prefab", (mainGo) => { return mainGo.AddComponent<MainView>(); }, false, ViewLayer.Logic, ViewType.Window);
+        ViewDict[ViewNames.Main] = view;
     }
 }
