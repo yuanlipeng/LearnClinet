@@ -5,11 +5,6 @@ using Entitas;
 
 public class EntityMoveSystem : IExecuteSystem
 {
-    //private Contexts mContext;
-    //public EntityMoveSystem(Contexts content)
-    //{
-    //    mContext = content;
-    //}
     public void Execute()
     {
         Contexts contexts = EntityMgr.Instance.GetContexts();
@@ -36,7 +31,7 @@ public class EntityMoveSystem : IExecuteSystem
         Vector3 diff = Vector3.Normalize(dir) * entity.moveComp.Speed;
         Vector3 destPos = entity.moveComp.CurPos + diff;
 
-        if (diff.sqrMagnitude >= dir.sqrMagnitude)
+        if (dir.sqrMagnitude < 0.01f || diff.sqrMagnitude >= dir.sqrMagnitude)
         {
             entity.moveComp.CurPos = entity.moveComp.DestPos;
             entity.moveComp.IsArrived = true;
