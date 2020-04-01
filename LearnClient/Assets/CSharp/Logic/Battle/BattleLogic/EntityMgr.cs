@@ -129,10 +129,12 @@ public class EntityMgr
     {
         EntitySetting entitySetting = EntitySetting.Setting[entity.entityInfoComp.ConfigId];
         mEntityCacheDict.Remove(entity.entityInfoComp.Id);
+
         if (entity.hasEntityRenderComp == true)
         {
             GameObject.Destroy(entity.entityRenderComp.MainGo);
         }
+
         AssetManager.Release(entitySetting.ResPath);
         entity.Release(EntityMgr.Instance);
         entity.Destroy();

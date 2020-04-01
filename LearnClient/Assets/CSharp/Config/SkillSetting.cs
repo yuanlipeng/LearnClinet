@@ -11,7 +11,7 @@ public class SkillSetting
     public bool IsBulletShoot; //是否是射击技能
     public AttackInfo AttackInfoCo; //如果技能是普通攻击时，需要存储的技能攻击数据。
     public float SkillAttackTime;//技能释法时间。
-    public bool IsAttackForward;
+    public bool IsAttackForward; //true：攻击正前方  false：攻击范围为 以自己为圆心的一个圆。
 
     public class AttackInfo
     {
