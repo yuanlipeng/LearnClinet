@@ -4,9 +4,12 @@ using UnityEngine;
 
 public enum ViewState
 {
-    Load,
-    EnterFinished,
-    ExitFinished,
+    Invalid,
+    Loading,
+    Entering,
+    Entered,
+    Exiting,
+    Exited,
 }
 
 public class ViewComp : MonoBehaviour
@@ -15,7 +18,7 @@ public class ViewComp : MonoBehaviour
     public GameObject MainGo;
     public string ViewName;
 
-    public ViewState CurViewStat = ViewState.Load;
+    public ViewState CurViewState = ViewState.Invalid;
     public bool IsDestroyNow = false;
 
     public void SetAtLastSibling()
@@ -61,16 +64,16 @@ public class ViewComp : MonoBehaviour
     {
         AddEvent();
         OnEnterFinished();
-        CurViewStat = ViewState.EnterFinished;
+        //CurViewStat = ViewState.EnterFinished;
 
-        HintRootGo.SetActive(ViewMgr.Instance.IsSelfActive(ViewName));
+        //HintRootGo.SetActive(ViewMgr.Instance.IsSelfActive(ViewName));
     }
 
     public void OnExitAniEnded()
     {
         HintRootGo.SetActive(false);
         this.OnExit();
-        this.CurViewStat = ViewState.ExitFinished;
+        //this.CurViewStat = ViewState.ExitFinished;
     }
 
     protected virtual void BuildUI()
